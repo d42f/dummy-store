@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { apiFetch } from '@/lib/apiFetch';
+import { apiUrl } from '@/lib/apiUrl';
 
 import { AuthContext, type AuthUser } from './AuthContext';
 
 const STORAGE_KEY = import.meta.env.VITE_AUTH_STORAGE_KEY as string;
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 interface LoginResponse extends AuthUser {
   accessToken: string;
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     data: user,
   } = useQuery({
     queryKey: ['auth/me', accessToken],
-    queryFn: () => apiFetch<AuthUser>(`${API_BASE_URL}/auth/me`, accessToken!),
+    queryFn: () => apiFetch<AuthUser>(apiUrl('/auth/me'), accessToken!),
     enabled: !!accessToken,
     retry: false,
     staleTime: Infinity,
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginMutation = useMutation({
     mutationFn: ({ username, password }: { username: string; password: string; rememberMe: boolean }) =>
-      apiFetch<LoginResponse>(`${API_BASE_URL}/auth/login`, null, {
+      apiFetch<LoginResponse>(apiUrl('/auth/login'), null, {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       }),
