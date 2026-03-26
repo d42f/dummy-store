@@ -27,9 +27,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
-    data: user,
-    isLoading: isUserLoading,
+    isPending: isUserPending,
     isError: isUserError,
+    data: user,
   } = useQuery({
     queryKey: ['auth/me', accessToken],
     queryFn: () => apiFetch<AuthUser>(`${API_BASE_URL}/auth/me`, accessToken!),
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user: user ?? null,
         accessToken,
-        isPending: isUserLoading || loginMutation.isPending,
+        isPending: accessToken ? isUserPending : false,
         isAuthenticated: !!accessToken && !!user && !isUserError,
         error: loginError,
         login,
