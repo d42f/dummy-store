@@ -27,7 +27,14 @@ export default defineConfig([
       'simple-import-sort/imports': [
         'error',
         {
-          groups: [['^\\u0000(?!.*\\.css)'], ['^node:'], ['^react', '^@?\\w'], ['^@/'], ['^\\.', '\\.css$']],
+          groups: [
+            ['^\\u0000(?!.*\\.css)'],
+            ['^node:'],
+            ['^react', '^@?\\w'],
+            ['^@/'],
+            ['^@assets/'],
+            ['^\\.', '\\.css$'],
+          ],
         },
       ],
       'simple-import-sort/exports': 'error',
