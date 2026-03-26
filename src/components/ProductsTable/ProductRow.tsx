@@ -5,9 +5,10 @@ import { Button } from '@/components/Button';
 import { cn } from '@/lib/cn';
 import { type Product } from '@/models/product';
 
-interface ProductRowProps {
+export interface ProductRowProps {
   className?: string;
   product: Product;
+  lowRatingThreshold?: number;
 }
 
 function formatPrice(price: number) {
@@ -16,9 +17,9 @@ function formatPrice(price: number) {
   return { int: intFormatted, dec };
 }
 
-export function ProductRow({ className, product }: ProductRowProps) {
+export function ProductRow({ className, product, lowRatingThreshold = 0 }: ProductRowProps) {
   const { int, dec } = formatPrice(product.price);
-  const lowRating = product.rating < 4;
+  const lowRating = product.rating < lowRatingThreshold;
 
   return (
     <tr className={cn('group border-b border-gray-100 last:border-0 hover:bg-gray-50', className)}>
@@ -35,8 +36,8 @@ export function ProductRow({ className, product }: ProductRowProps) {
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
-          <div>
-            <div className="max-w-[220px] truncate font-semibold">{product.title}</div>
+          <div className="overflow-hidden">
+            <div className="truncate font-semibold">{product.title}</div>
             <div className="text-xs text-gray-400 capitalize">{product.category}</div>
           </div>
         </div>
