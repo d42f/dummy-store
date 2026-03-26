@@ -1,18 +1,19 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useFetch } from '@/hooks/useFetch';
+import { apiFetch } from '@/lib/apiFetch';
 
-import { FetchContext } from '../Fetch';
 import { AuthContext, type AuthUser } from './AuthContext';
 
-const STORAGE_KEY = 'accessToken';
+const STORAGE_KEY = import.meta.env.VITE_AUTH_STORAGE_KEY as string;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 interface LoginResponse extends AuthUser {
   accessToken: string;
   refreshToken: string;
 }
 
-function loadTokenFromStorage(): string | null {
+function loadToken(): string | null {
   try {
     return localStorage.getItem(STORAGE_KEY);
   } catch {
@@ -21,77 +22,71 @@ function loadTokenFromStorage(): string | null {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { config, setConfig } = useContext(FetchContext)!;
-  const [fetchInitialized, setFetchInitialized] = useState(false);
-
-  const [accessToken, setAccessToken] = useState<string | null>(loadTokenFromStorage);
-  const [user, setUser] = useState<AuthUser | null>(null);
-
-  const { isPending: isUserPending, execute: userExecute } = useFetch<AuthUser>('https://dummyjson.com/auth/me', {
-    skip: true,
-  });
+  const queryClient = useQueryClient();
+  const [accessToken, setAccessToken] = useState<string | null>(loadToken);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
-    isPending: isLoginPending,
-    error,
-    execute: loginExecute,
-    clearError,
-  } = useFetch<LoginResponse>('https://dummyjson.com/auth/login', { skip: true });
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useQuery({
+    queryKey: ['auth/me', accessToken],
+    queryFn: () => apiFetch<AuthUser>(`${API_BASE_URL}/auth/me`, accessToken!),
+    enabled: !!accessToken,
+    retry: false,
+    staleTime: Infinity,
+  });
 
-  async function login({ username, password }: { username: string; password: string }) {
-    const { data, error } = await loginExecute({
-      method: 'POST',
-      body: JSON.stringify({ username, password, expiresInMins: 60 }),
-    });
-
-    if (data) {
-      setConfig({ accessToken: data.accessToken });
+  const loginMutation = useMutation({
+    mutationFn: ({ username, password }: { username: string; password: string }) =>
+      apiFetch<LoginResponse>(`${API_BASE_URL}/auth/login`, null, {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      }),
+    onSuccess: data => {
       localStorage.setItem(STORAGE_KEY, data.accessToken);
       setAccessToken(data.accessToken);
-      setUser(data);
-    }
+      setLoginError(null);
+    },
+    onError: (err: Error) => {
+      setLoginError(err.message);
+    },
+  });
 
-    return { data, error };
-  }
+  const login = useCallback(
+    async ({ username, password }: { username: string; password: string }) => {
+      setLoginError(null);
+      try {
+        await loginMutation.mutateAsync({ username, password });
+      } catch {
+        // error is handled in onError
+      }
+    },
+    [loginMutation],
+  );
 
   const logout = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     setAccessToken(null);
-    setConfig({ accessToken: null });
-  }, [setConfig]);
+    queryClient.removeQueries({ queryKey: ['auth/me'] });
+  }, [queryClient]);
 
   useEffect(() => {
-    if (config.accessToken) {
-      userExecute().then(({ data }) => {
-        if (data) {
-          setUser(data);
-        } else {
-          logout();
-        }
-      });
-    }
-  }, [config.accessToken, userExecute, logout]);
-
-  useEffect(() => {
-    if (!fetchInitialized) {
-      setTimeout(() => setFetchInitialized(true), 10);
-      if (accessToken) {
-        setConfig({ accessToken });
-      }
-    }
-  }, [fetchInitialized, accessToken, setConfig]);
+    if (isUserError) localStorage.removeItem(STORAGE_KEY);
+  }, [isUserError]);
 
   return (
     <AuthContext.Provider
       value={{
         user: user ?? null,
         accessToken,
-        isPending: !fetchInitialized || isUserPending || isLoginPending,
-        isAuthenticated: !!accessToken && !!user,
-        error,
-        logout,
+        isPending: isUserLoading || loginMutation.isPending,
+        isAuthenticated: !!accessToken && !!user && !isUserError,
+        error: loginError,
         login,
-        clearError,
+        logout,
+        clearError: () => setLoginError(null),
       }}
     >
       {children}

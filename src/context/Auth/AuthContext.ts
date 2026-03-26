@@ -15,10 +15,7 @@ export interface AuthContextValue {
   isAuthenticated: boolean;
   isPending: boolean;
   error: string | null;
-  login: (arg: {
-    username: string;
-    password: string;
-  }) => Promise<Partial<{ data: AuthUser | null; error: string | null }>>;
+  login: (arg: { username: string; password: string }) => Promise<void>;
   logout: () => void;
   clearError: () => void;
 }
