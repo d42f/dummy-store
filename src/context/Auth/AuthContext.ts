@@ -15,7 +15,7 @@ export interface AuthContextValue {
   isAuthenticated: boolean;
   isPending: boolean;
   error: string | null;
-  login: (arg: { username: string; password: string }) => Promise<void>;
+  login: (arg: { username: string; password: string; rememberMe: boolean }) => Promise<void>;
   logout: () => void;
   clearError: () => void;
 }

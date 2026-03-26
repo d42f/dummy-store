@@ -13,12 +13,21 @@ interface LoginResponse extends AuthUser {
   refreshToken: string;
 }
 
-function loadToken(): string | null {
-  try {
-    return localStorage.getItem(STORAGE_KEY);
-  } catch {
-    return null;
+function saveToken(token: string, persistent: boolean): void {
+  if (persistent) {
+    localStorage.setItem(STORAGE_KEY, token);
+  } else {
+    sessionStorage.setItem(STORAGE_KEY, token);
   }
+}
+
+function loadToken(): string | null {
+  return localStorage.getItem(STORAGE_KEY) ?? sessionStorage.getItem(STORAGE_KEY);
+}
+
+function removeToken(): void {
+  localStorage.removeItem(STORAGE_KEY);
+  sessionStorage.removeItem(STORAGE_KEY);
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -39,13 +48,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const loginMutation = useMutation({
-    mutationFn: ({ username, password }: { username: string; password: string }) =>
+    mutationFn: ({ username, password }: { username: string; password: string; rememberMe: boolean }) =>
       apiFetch<LoginResponse>(`${API_BASE_URL}/auth/login`, null, {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       }),
-    onSuccess: data => {
-      localStorage.setItem(STORAGE_KEY, data.accessToken);
+    onSuccess: (data, { rememberMe }) => {
+      saveToken(data.accessToken, rememberMe);
       setAccessToken(data.accessToken);
       setLoginError(null);
     },
@@ -55,10 +64,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const login = useCallback(
-    async ({ username, password }: { username: string; password: string }) => {
+    async ({ username, password, rememberMe }: { username: string; password: string; rememberMe: boolean }) => {
       setLoginError(null);
       try {
-        await loginMutation.mutateAsync({ username, password });
+        await loginMutation.mutateAsync({ username, password, rememberMe });
       } catch {
         // error is handled in onError
       }
@@ -67,13 +76,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const logout = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
+    removeToken();
     setAccessToken(null);
     queryClient.removeQueries({ queryKey: ['auth/me'] });
   }, [queryClient]);
 
   useEffect(() => {
-    if (isUserError) localStorage.removeItem(STORAGE_KEY);
+    if (isUserError) removeToken();
   }, [isUserError]);
 
   return (
