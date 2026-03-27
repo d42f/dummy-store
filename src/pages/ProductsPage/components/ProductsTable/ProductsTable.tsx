@@ -1,4 +1,4 @@
-import { type Product } from '@/entities/Product/model';
+import { type Product } from '@/entities/Product1/model';
 import { cn } from '@/lib/cn';
 
 import { type SortField, type SortOrder } from '../../api';

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { type Product, type ProductsResponse } from '@/entities/Product/model';
+import { type Product, type ProductsResponse } from '@/entities/Product1/model';
 import { useApiClient } from '@/hooks/useApiClient';
 import { apiUrl } from '@/lib/apiUrl';
 

@@ -5,7 +5,7 @@ import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { ImageUpload } from '@/components/ImageUpload';
 import { Modal } from '@/components/Modal';
-import { type Product } from '@/entities/Product/model';
+import { type Product } from '@/entities/Product1/model';
 
 type AddProductForm = Omit<Product, 'id' | 'thumbnail'> & {
   image: File | null;
