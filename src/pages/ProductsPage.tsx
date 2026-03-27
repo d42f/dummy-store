@@ -28,7 +28,11 @@ export default function ProductsPage() {
     return () => clearTimeout(id);
   }, [search]);
 
-  const { data, isFetching, refetch } = useProductsQuery({ search: debouncedSearch, page, limit: PAGE_SIZE });
+  const { data, isFetching, refetch } = useProductsQuery({
+    search: debouncedSearch,
+    page,
+    limit: PAGE_SIZE,
+  });
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,7 +54,12 @@ export default function ProductsPage() {
         />
       </div>
 
-      <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+      <div className="relative overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
+        {isFetching && (
+          <div className="absolute top-0 left-0 h-1 w-full">
+            <div className="h-full animate-[progress_30s_linear_forwards] bg-blue-500" />
+          </div>
+        )}
         <div className="flex items-center justify-between px-6 py-4">
           <span className="font-semibold">Все позиции</span>
           <div className="flex items-center gap-2">
