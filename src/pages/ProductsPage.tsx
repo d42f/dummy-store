@@ -9,7 +9,7 @@ import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { ProductsPagination } from '@/components/Pagination';
 import { ProductsTable } from '@/components/ProductsTable';
-import { useProductsQuery } from '@/hooks/useProductsQuery';
+import { type SortField, type SortOrder, useProductsQuery } from '@/hooks/useProductsQuery';
 import { cn } from '@/lib/cn';
 
 const PAGE_SIZE = 20;
@@ -19,6 +19,8 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortField>('title');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -32,7 +34,19 @@ export default function ProductsPage() {
     search: debouncedSearch,
     page,
     limit: PAGE_SIZE,
+    sortBy,
+    order: sortOrder,
   });
+
+  function handleSort(field: SortField) {
+    if (field === sortBy) {
+      setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+    setPage(1);
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -79,6 +93,9 @@ export default function ProductsPage() {
           products={data?.products ?? []}
           isFetching={isFetching}
           lowRatingThreshold={LOW_RATING_THRESHOLD}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSort={handleSort}
         />
 
         {(data?.total ?? 0) > 0 && (
