@@ -38,6 +38,7 @@ export function ProductsPage() {
     ...initialState,
     search: initialSearch,
     debouncedSearch: initialSearch,
+    page: Math.max(1, Number(searchParams.get('page')) || 1),
     sortBy: parseSortField(searchParams.get('sortBy')),
     sortOrder: parseSortOrder(searchParams.get('sortOrder')),
   });
@@ -62,6 +63,11 @@ export function ProductsPage() {
       (params: URLSearchParams) => {
         params.set('sortBy', sortBy);
         params.set('sortOrder', sortOrder);
+        if (page > 1) {
+          params.set('page', String(page));
+        } else {
+          params.delete('page');
+        }
         if (debouncedSearch) {
           params.set('search', debouncedSearch);
         } else {
@@ -71,7 +77,7 @@ export function ProductsPage() {
       },
       { replace: true },
     );
-  }, [sortBy, sortOrder, debouncedSearch, setSearchParams]);
+  }, [sortBy, sortOrder, page, debouncedSearch, setSearchParams]);
 
   return (
     <>
