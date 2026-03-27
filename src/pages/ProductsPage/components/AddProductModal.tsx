@@ -1,16 +1,15 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
+import { ImageUpload } from '@/components/ImageUpload';
 import { Modal } from '@/components/Modal';
+import { type Product } from '@/entities/product/model';
 
-interface AddProductForm {
-  name: string;
-  price: string;
-  vendor: string;
-  sku: string;
-}
+type AddProductForm = Omit<Product, 'id' | 'thumbnail'> & {
+  image: File | null;
+};
 
 interface AddProductModalProps {
   open: boolean;
@@ -20,48 +19,57 @@ interface AddProductModalProps {
 export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
   const {
     register,
+    control,
     handleSubmit: submit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<AddProductForm>();
+  } = useForm<AddProductForm>({ defaultValues: { image: null } });
 
   function handleOpenChange(value: boolean) {
     if (!value) reset();
     onOpenChange(value);
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(values: AddProductForm) {
+    console.log(values);
     await new Promise(resolve => setTimeout(resolve, 1000));
     onOpenChange(false);
     reset();
-    toast.success('Товар успешно добавлен');
+    toast.success(`Товар "${values.title}" успешно добавлен`);
   }
 
   return (
-    <Modal open={open} onOpenChange={handleOpenChange} title="Добавить товар">
+    <Modal className="max-w-2xl" open={open} onOpenChange={handleOpenChange} title="Добавить товар">
       <form className="flex flex-col gap-4" onSubmit={submit(handleSubmit)} noValidate>
-        <div className="flex flex-col gap-4">
-          <FormInput
-            autoFocus
-            label="Наименование"
-            placeholder="Введите наименование"
-            error={errors.name?.message}
-            {...register('name', { required: 'Введите наименование' })}
+        <div className="grid grid-cols-[1fr_1fr] gap-4">
+          <Controller
+            control={control}
+            name="image"
+            render={({ field }) => <ImageUpload className="h-full" value={field.value} onChange={field.onChange} />}
           />
-          <FormInput
-            label="Цена"
-            placeholder="0.00"
-            type="number"
-            min="0"
-            step="0.01"
-            error={errors.price?.message}
-            {...register('price', {
-              required: 'Введите цену',
-              min: { value: 0, message: 'Цена не может быть отрицательной' },
-            })}
-          />
-          <FormInput label="Вендор" placeholder="Введите вендора" {...register('vendor')} />
-          <FormInput label="Артикул" placeholder="Введите артикул" {...register('sku')} />
+          <div className="flex flex-col gap-4">
+            <FormInput
+              autoFocus
+              label="Наименование"
+              placeholder="Введите наименование"
+              error={errors.title?.message}
+              {...register('title', { required: 'Введите наименование' })}
+            />
+            <FormInput label="Бренд" placeholder="Введите бренд" {...register('brand')} />
+            <FormInput label="Артикул" placeholder="Введите артикул" {...register('sku')} />
+            <FormInput
+              label="Цена"
+              placeholder="0.00"
+              type="number"
+              min="0"
+              step="0.01"
+              error={errors.price?.message}
+              {...register('price', {
+                required: 'Введите цену',
+                min: { value: 0, message: 'Цена не может быть отрицательной' },
+              })}
+            />
+          </div>
         </div>
         <div className="flex justify-end gap-4 border-t border-gray-100">
           <Button type="submit" disabled={isSubmitting}>
