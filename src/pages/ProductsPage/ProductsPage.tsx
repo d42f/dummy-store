@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import PlusIcon from '@assets/icons/plus.svg?react';
 import RefreshIcon from '@assets/icons/refresh.svg?react';
@@ -10,16 +11,37 @@ import { FormInput } from '@/components/FormInput';
 import { ProductsPagination } from '@/components/Pagination';
 import { cn } from '@/lib/cn';
 
-import { useProductsQuery } from './api';
+import { type SortField, type SortOrder, useProductsQuery } from './api';
 import { AddProductModal } from './components/AddProductModal';
 import { ProductsTable } from './components/ProductsTable';
 import { initialState, reducer } from './model';
 
 const PAGE_SIZE = 20;
-const LOW_RATING_THRESHOLD = 4;
+const LOW_RATING_THRESHOLD = 3.5;
+
+const SORT_FIELDS: SortField[] = ['title', 'price', 'rating'];
+const SORT_ORDERS: SortOrder[] = ['asc', 'desc'];
+
+function parseSortField(value: string | null): SortField {
+  return SORT_FIELDS.includes(value as SortField) ? (value as SortField) : initialState.sortBy;
+}
+
+function parseSortOrder(value: string | null): SortOrder {
+  return SORT_ORDERS.includes(value as SortOrder) ? (value as SortOrder) : initialState.sortOrder;
+}
 
 export function ProductsPage() {
-  const [{ search, debouncedSearch, page, sortBy, sortOrder }, dispatch] = useReducer(reducer, initialState);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const initialSearch = searchParams.get('search') ?? '';
+  const [{ search, debouncedSearch, page, sortBy, sortOrder }, dispatch] = useReducer(reducer, {
+    ...initialState,
+    search: initialSearch,
+    debouncedSearch: initialSearch,
+    sortBy: parseSortField(searchParams.get('sortBy')),
+    sortOrder: parseSortOrder(searchParams.get('sortOrder')),
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isFetching, refetch } = useProductsQuery({
@@ -34,6 +56,22 @@ export function ProductsPage() {
     const id = setTimeout(() => dispatch({ type: 'COMMIT_SEARCH' }), 400);
     return () => clearTimeout(id);
   }, [search]);
+
+  useEffect(() => {
+    setSearchParams(
+      (params: URLSearchParams) => {
+        params.set('sortBy', sortBy);
+        params.set('sortOrder', sortOrder);
+        if (debouncedSearch) {
+          params.set('search', debouncedSearch);
+        } else {
+          params.delete('search');
+        }
+        return params;
+      },
+      { replace: true },
+    );
+  }, [sortBy, sortOrder, debouncedSearch, setSearchParams]);
 
   return (
     <>
