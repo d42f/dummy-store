@@ -8,8 +8,8 @@ export default function MainLayout() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="bg-white shadow-sm">
+    <div className="flex h-screen flex-col">
+      <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <Logo />
@@ -29,8 +29,10 @@ export default function MainLayout() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
-        <Outlet />
+      <main className="flex-1 overflow-auto">
+        <div className="mx-auto max-w-7xl px-4 py-6">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

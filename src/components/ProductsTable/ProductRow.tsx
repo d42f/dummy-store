@@ -23,7 +23,7 @@ export function ProductRow({ className, product, lowRatingThreshold = 0 }: Produ
 
   return (
     <tr className={cn('group border-b border-gray-100 last:border-0 hover:bg-gray-50', className)}>
-      <td className="px-6 py-3">
+      <td className="px-6 py-3 text-center">
         <input type="checkbox" className="cursor-pointer accent-sky-600" />
       </td>
       <td className="px-3 py-3">

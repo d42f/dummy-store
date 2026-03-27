@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import CloseIcon from '@assets/icons/close.svg?react';
 import PlusIcon from '@assets/icons/plus.svg?react';
 import RefreshIcon from '@assets/icons/refresh.svg?react';
 import SearchIcon from '@assets/icons/search.svg?react';
@@ -38,6 +39,13 @@ export default function ProductsPage() {
           placeholder="Найти"
           value={search}
           leftElement={<SearchIcon className="text-gray-400" />}
+          rightElement={
+            search && (
+              <Button className="p-0" type="button" variant="ghost" size="sm" onClick={() => setSearch('')}>
+                <CloseIcon />
+              </Button>
+            )
+          }
           onChange={e => setSearch(e.target.value)}
         />
       </div>
