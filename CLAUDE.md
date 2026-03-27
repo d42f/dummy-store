@@ -42,7 +42,7 @@ src/
   assets/icons/       SVG icons
   components/         Shared UI (Button, FormInput, Checkbox, Modal, Pagination, ImageUpload, Logo, CloseButton)
   context/Auth/       AuthContext, AuthProvider, index
-  entities/product/   Product + ProductsResponse types
+  entities/Product/   Product + ProductsResponse types
   hooks/              useAuth, useApiClient
   layouts/            MainLayout (authed), PublicLayout (unauthed)
   lib/                apiFetch, apiUrl, cn

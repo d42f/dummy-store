@@ -45,7 +45,7 @@ GET /products/search?q=phone&limit=10&skip=0&sortBy=price&order=desc
 
 Response shape: `{ products: Product[], total: number, skip: number, limit: number }`.
 
-## Product entity (`src/entities/product/model.ts`)
+## Product entity (`src/entities/Product/model.ts`)
 
 ```ts
 interface Product {
