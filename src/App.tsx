@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router';
 
-import LoginPage from './pages/LoginPage';
-import ProductsPage from './pages/ProductsPage';
-import AuthGuard from './router/AuthGuard';
-import PrivateRoute from './router/PrivateRoute';
-import PublicRoute from './router/PublicRoute';
+import { LoginPage } from './pages/LoginPage';
+import { ProductsPage } from './pages/ProductsPage';
+import { AuthGuard } from './router/AuthGuard';
+import { PrivateRoute } from './router/PrivateRoute';
+import { PublicRoute } from './router/PublicRoute';
 
-function App() {
+export default function App() {
   return (
     <Routes>
       <Route element={<AuthGuard />}>
@@ -21,5 +21,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

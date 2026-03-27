@@ -2,8 +2,8 @@ import MoreVerticalIcon from '@assets/icons/more-vertical.svg?react';
 import PlusIcon from '@assets/icons/plus.svg?react';
 
 import { Button } from '@/components/Button';
+import { type Product } from '@/entities/product/model';
 import { cn } from '@/lib/cn';
-import { type Product } from '@/models/product';
 
 export interface ProductRowProps {
   className?: string;

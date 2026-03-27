@@ -1,7 +1,7 @@
-import { type SortField, type SortOrder } from '@/hooks/useProductsQuery';
+import { type Product } from '@/entities/product/model';
 import { cn } from '@/lib/cn';
-import { type Product } from '@/models/product';
 
+import { type SortField, type SortOrder } from '../../api';
 import { ProductRow, type ProductRowProps } from './ProductRow';
 import { SortableHeader } from './SortableHeader';
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import CloseIcon from '@assets/icons/close.svg?react';
 import PlusIcon from '@assets/icons/plus.svg?react';
@@ -8,27 +8,17 @@ import SearchIcon from '@assets/icons/search.svg?react';
 import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { ProductsPagination } from '@/components/Pagination';
-import { ProductsTable } from '@/components/ProductsTable';
-import { type SortField, type SortOrder, useProductsQuery } from '@/hooks/useProductsQuery';
 import { cn } from '@/lib/cn';
+
+import { useProductsQuery } from './api';
+import { ProductsTable } from './components/ProductsTable';
+import { initialState, reducer } from './model';
 
 const PAGE_SIZE = 20;
 const LOW_RATING_THRESHOLD = 4;
 
-export default function ProductsPage() {
-  const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<SortField>('title');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setDebouncedSearch(search.trim());
-      setPage(1);
-    }, 400);
-    return () => clearTimeout(id);
-  }, [search]);
+export function ProductsPage() {
+  const [{ search, debouncedSearch, page, sortBy, sortOrder }, dispatch] = useReducer(reducer, initialState);
 
   const { data, isFetching, refetch } = useProductsQuery({
     search: debouncedSearch,
@@ -38,15 +28,10 @@ export default function ProductsPage() {
     order: sortOrder,
   });
 
-  function handleSort(field: SortField) {
-    if (field === sortBy) {
-      setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortBy(field);
-      setSortOrder('asc');
-    }
-    setPage(1);
-  }
+  useEffect(() => {
+    const id = setTimeout(() => dispatch({ type: 'COMMIT_SEARCH' }), 400);
+    return () => clearTimeout(id);
+  }, [search]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -59,12 +44,18 @@ export default function ProductsPage() {
           leftElement={<SearchIcon className="text-gray-400" />}
           rightElement={
             search && (
-              <Button className="p-0" type="button" variant="ghost" size="sm" onClick={() => setSearch('')}>
+              <Button
+                className="p-0"
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => dispatch({ type: 'SET_SEARCH', search: '' })}
+              >
                 <CloseIcon />
               </Button>
             )
           }
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => dispatch({ type: 'SET_SEARCH', search: e.target.value })}
         />
       </div>
 
@@ -95,11 +86,16 @@ export default function ProductsPage() {
           lowRatingThreshold={LOW_RATING_THRESHOLD}
           sortBy={sortBy}
           sortOrder={sortOrder}
-          onSort={handleSort}
+          onSort={field => dispatch({ type: 'SORT', field })}
         />
 
         {(data?.total ?? 0) > 0 && (
-          <ProductsPagination page={page} limit={PAGE_SIZE} total={data?.total ?? 0} onPageChange={setPage} />
+          <ProductsPagination
+            page={page}
+            limit={PAGE_SIZE}
+            total={data?.total ?? 0}
+            onPageChange={p => dispatch({ type: 'SET_PAGE', page: p })}
+          />
         )}
       </div>
     </div>

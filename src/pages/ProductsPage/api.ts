@@ -1,46 +1,28 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { type Product, type ProductsResponse } from '@/entities/product/model';
+import { useApiClient } from '@/hooks/useApiClient';
 import { apiUrl } from '@/lib/apiUrl';
-import { type SortOrder } from '@/lib/sort';
-import { type Product, type ProductsResponse } from '@/models/product';
 
-import { useApiClient } from './useApiClient';
-
-export type { SortOrder };
+export type SortOrder = 'asc' | 'desc';
 export type SortField = keyof Pick<Product, 'title' | 'price' | 'rating'>;
 
-function getProductsUrl({
-  search,
-  limit,
-  skip,
-  sortBy,
-  order,
-}: {
+export type ProductsQueryParams = {
   search: string;
+  page: number;
   limit: number;
-  skip: number;
   sortBy: SortField;
   order: SortOrder;
-}) {
+};
+
+function getProductsUrl({ search, limit, skip, sortBy, order }: Omit<ProductsQueryParams, 'page'> & { skip: number }) {
   if (search) {
     return apiUrl('/products/search', { q: search, limit, skip, sortBy, order });
   }
   return apiUrl('/products', { limit, skip, sortBy, order });
 }
 
-export function useProductsQuery({
-  search,
-  page,
-  limit,
-  sortBy,
-  order,
-}: {
-  search: string;
-  page: number;
-  limit: number;
-  sortBy: SortField;
-  order: SortOrder;
-}) {
+export function useProductsQuery({ search, page, limit, sortBy, order }: ProductsQueryParams) {
   const apiClient = useApiClient();
 
   return useQuery({

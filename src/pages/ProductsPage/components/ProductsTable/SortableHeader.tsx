@@ -1,8 +1,9 @@
 import SortAscIcon from '@assets/icons/sort-asc.svg?react';
 
 import { Button } from '@/components/Button';
-import { type SortField, type SortOrder } from '@/hooks/useProductsQuery';
 import { cn } from '@/lib/cn';
+
+import { type SortField, type SortOrder } from '../../api';
 
 interface SortableHeaderProps {
   className?: string;

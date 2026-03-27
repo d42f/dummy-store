@@ -19,7 +19,7 @@ interface LoginFormValues {
   rememberMe: boolean;
 }
 
-export default function LoginPage() {
+export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login, error } = useAuth();
