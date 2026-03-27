@@ -23,7 +23,7 @@ Uses the [DummyJSON Products API](https://dummyjson.com/docs/products) as a data
 - Column sorting (name, price, rating)
 - Pagination
 - Add product via modal form with toast notification
-- Search and sort state persisted in URL
+- Search, sort, and page state persisted in URL
 
 ## Getting started
 
