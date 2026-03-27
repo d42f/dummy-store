@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'sonner';
 
 import { AuthProvider } from '@/context/Auth';
 
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <AuthProvider>
           <App />
         </AuthProvider>
+        <Toaster position="bottom-right" />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>

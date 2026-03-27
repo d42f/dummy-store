@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
-import CloseIcon from '@assets/icons/close.svg?react';
 import EyeIcon from '@assets/icons/eye.svg?react';
 import EyeOffIcon from '@assets/icons/eye-off.svg?react';
 import LockIcon from '@assets/icons/lock.svg?react';
@@ -9,6 +8,7 @@ import UserIcon from '@assets/icons/user.svg?react';
 
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
+import { CloseButton } from '@/components/CloseButton';
 import { FormInput } from '@/components/FormInput';
 import { Logo } from '@/components/Logo';
 import { useAuth } from '@/hooks/useAuth';
@@ -54,13 +54,7 @@ export function LoginPage() {
         placeholder="Введите логин"
         error={errors.username?.message}
         leftElement={<UserIcon className="text-gray-400" />}
-        rightElement={
-          username && (
-            <Button className="p-0" type="button" variant="ghost" size="sm" onClick={() => setValue('username', '')}>
-              <CloseIcon />
-            </Button>
-          )
-        }
+        rightElement={username && <CloseButton onClick={() => setValue('username', '')} />}
       />
 
       <FormInput

@@ -21,6 +21,10 @@
   }
 }
 
+header[data-fixed] {
+  padding-inline-end: var(--removed-body-scroll-bar-size, 0px);
+}
+
 :root {
   --background: var(--color-gray-100);
   --foreground: var(--color-gray-900);
