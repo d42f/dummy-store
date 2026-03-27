@@ -15,11 +15,11 @@ export type ProductsQueryParams = {
   order: SortOrder;
 };
 
-function getProductsUrl({ search, limit, skip, sortBy, order }: Omit<ProductsQueryParams, 'page'> & { skip: number }) {
+function getProductsUrl({ search, ...rest }: Omit<ProductsQueryParams, 'page'> & { skip: number }) {
   if (search) {
-    return apiUrl('/products/search', { q: search, limit, skip, sortBy, order });
+    return apiUrl('/products/search', { q: search, ...rest });
   }
-  return apiUrl('/products', { limit, skip, sortBy, order });
+  return apiUrl('/products', rest);
 }
 
 export function useProductsQuery({ search, page, limit, sortBy, order }: ProductsQueryParams) {
