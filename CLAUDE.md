@@ -17,7 +17,7 @@ Demo SPA: an authenticated product catalog backed by the [DummyJSON API](https:/
 | Utilities    | clsx + tailwind-merge → `src/lib/cn.ts`                                            |
 | Lint/format  | ESLint, Prettier + `prettier-plugin-tailwindcss`, Husky, commitlint (conventional) |
 
-Path alias: `@` → `src/`
+Path aliases: `@` → `src/`, `@assets` → `src/assets/`
 
 ## Environment variables
 
@@ -39,17 +39,19 @@ VITE_AUTH_STORAGE_KEY=auth_token
 
 ```
 src/
-  assets/icons/       SVG icons
-  components/         Shared UI (Button, FormInput, Checkbox, Modal, Pagination, ImageUpload, Logo, CloseButton)
-  context/Auth/       AuthContext, AuthProvider, index
-  entities/Product/   Product + ProductsResponse types
-  hooks/              useAuth, useApiClient
-  layouts/            MainLayout (authed), PublicLayout (unauthed)
-  lib/                apiFetch, apiUrl, cn
+  assets/icons/         SVG icons (@assets alias)
+  components/           Shared UI: Button, FormInput, Checkbox, Modal, Pagination,
+                        ImageUpload, Logo, CloseButton, AuthForm
+                        ProductsTable/  ProductsTable, ProductRow, SortableHeader
+  context/              AuthContext, AuthProvider, useAuth, useApiClient
+  layouts/              MainLayout (authed), PublicLayout (unauthed)
+  lib/                  apiFetch, apiUrl, cn
   pages/
     LoginPage.tsx
-    ProductsPage/     ProductsPage, model, api, components/
-  router/             AuthGuard, PrivateRoute, PublicRoute
+    RegisterPage.tsx
+    ProductsPage/       ProductsPage, AddProductModal, api, model
+  router/               AuthGuard, PrivateRoute, PublicRoute
+  types/                product.ts, user.ts
   App.tsx
   main.tsx
 ```

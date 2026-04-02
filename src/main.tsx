@@ -5,9 +5,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
 
-import { AuthProvider } from '@/app/providers';
+import { AuthProvider } from '@/context/AuthProvider';
 
-import App from './app/App';
+import App from './App';
 import './index.css';
 
 const queryClient = new QueryClient();
