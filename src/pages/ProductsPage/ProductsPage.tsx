@@ -84,10 +84,10 @@ export function ProductsPage() {
       <AddProductModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4">
-          <h3 className="text-2xl font-bold">Товары</h3>
+          <h3 className="text-2xl font-bold">Products</h3>
           <FormInput
             className="flex-1"
-            placeholder="Найти"
+            placeholder="Search"
             value={search}
             leftElement={<SearchIcon className="text-gray-400" />}
             rightElement={search && <CloseButton onClick={() => dispatch({ type: 'SET_SEARCH', search: '' })} />}
@@ -102,7 +102,7 @@ export function ProductsPage() {
             </div>
           )}
           <div className="flex items-center justify-between px-6 py-4">
-            <span className="font-semibold">Все позиции</span>
+            <span className="font-semibold">All items</span>
             <div className="flex items-center gap-2">
               <Button className="px-2" variant="secondary" disabled={isFetching} onClick={() => refetch()}>
                 <span className="flex h-6 w-6 items-center justify-center">
@@ -111,7 +111,7 @@ export function ProductsPage() {
               </Button>
               <Button onClick={() => setIsModalOpen(true)}>
                 <PlusIcon className="h-4 w-4" />
-                Добавить
+                Add
               </Button>
             </div>
           </div>

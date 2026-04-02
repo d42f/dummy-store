@@ -56,7 +56,7 @@ export function ImageUpload({ className, value, onChange }: ImageUploadProps) {
     >
       {hasImage ? (
         <>
-          <img className="absolute inset-0 h-full w-full rounded-lg object-cover" src={preview!} alt="Предпросмотр" />
+          <img className="absolute inset-0 h-full w-full rounded-lg object-cover" src={preview!} alt="Preview" />
           <CloseButton
             className="absolute top-2 right-2"
             variant="secondary"
@@ -64,7 +64,7 @@ export function ImageUpload({ className, value, onChange }: ImageUploadProps) {
               e.stopPropagation();
               onChange?.(null);
             }}
-            aria-label="Удалить фото"
+            aria-label="Remove photo"
           />
         </>
       ) : (
@@ -73,9 +73,9 @@ export function ImageUpload({ className, value, onChange }: ImageUploadProps) {
             <ImageIcon className="h-5 w-5 text-gray-500" />
           </div>
           <p className="text-sm text-gray-500">
-            Перетащите или <span className="font-medium text-sky-600">выберите файл</span>
+            Drag & drop or <span className="font-medium text-sky-600">choose a file</span>
           </p>
-          <p className="text-xs text-gray-400">PNG, JPG, WEBP до 10 МБ</p>
+          <p className="text-xs text-gray-400">PNG, JPG, WEBP up to 10 MB</p>
         </div>
       )}
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleChange} />

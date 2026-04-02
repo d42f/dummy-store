@@ -35,11 +35,11 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
     await new Promise(resolve => setTimeout(resolve, 1000));
     onOpenChange(false);
     reset();
-    toast.success(`Товар "${values.title}" успешно добавлен`);
+    toast.success(`Product "${values.title}" added successfully`);
   }
 
   return (
-    <Modal className="max-w-2xl" open={open} onOpenChange={handleOpenChange} title="Добавить товар">
+    <Modal className="max-w-2xl" open={open} onOpenChange={handleOpenChange} title="Add product">
       <form className="flex flex-col gap-4" onSubmit={submit(handleSubmit)} noValidate>
         <div className="grid grid-cols-[1fr_1fr] gap-4">
           <Controller
@@ -50,33 +50,33 @@ export function AddProductModal({ open, onOpenChange }: AddProductModalProps) {
           <div className="flex flex-col gap-4">
             <FormInput
               autoFocus
-              label="Наименование"
-              placeholder="Введите наименование"
+              label="Name"
+              placeholder="Enter name"
               error={errors.title?.message}
-              {...register('title', { required: 'Введите наименование' })}
+              {...register('title', { required: 'Enter name' })}
             />
-            <FormInput label="Бренд" placeholder="Введите бренд" {...register('brand')} />
-            <FormInput label="Артикул" placeholder="Введите артикул" {...register('sku')} />
+            <FormInput label="Brand" placeholder="Enter brand" {...register('brand')} />
+            <FormInput label="SKU" placeholder="Enter SKU" {...register('sku')} />
             <FormInput
-              label="Цена"
+              label="Price"
               placeholder="0.00"
               type="number"
               min="0"
               step="0.01"
               error={errors.price?.message}
               {...register('price', {
-                required: 'Введите цену',
-                min: { value: 0, message: 'Цена не может быть отрицательной' },
+                required: 'Enter price',
+                min: { value: 0, message: 'Price cannot be negative' },
               })}
             />
           </div>
         </div>
         <div className="flex justify-end gap-4 border-t border-gray-100">
           <Button type="submit" disabled={isSubmitting}>
-            Добавить
+            Add
           </Button>
           <Button type="button" variant="secondary" disabled={isSubmitting} onClick={() => handleOpenChange(false)}>
-            Отмена
+            Cancel
           </Button>
         </div>
       </form>

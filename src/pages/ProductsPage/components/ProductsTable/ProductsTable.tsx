@@ -32,7 +32,7 @@ export function ProductsTable({
         <col className="w-36" />
         <col className="w-24" />
         <col className="w-36" />
-        <col className="w-24" />
+        <col className="w-30" />
       </colgroup>
       <thead>
         <tr className="border-t border-b border-gray-100 text-gray-400">
@@ -41,19 +41,19 @@ export function ProductsTable({
           </th>
           <th className="px-3 py-3 text-left font-medium">
             <SortableHeader field="title" sortBy={sortBy} sortOrder={sortOrder} onSort={onSort}>
-              Наименование
+              Name
             </SortableHeader>
           </th>
-          <th className="px-3 py-3 text-left font-medium">Вендор</th>
-          <th className="px-3 py-3 text-left font-medium">Артикул</th>
+          <th className="px-3 py-3 text-left font-medium">Vendor</th>
+          <th className="px-3 py-3 text-left font-medium">SKU</th>
           <th className="px-3 py-3 text-center font-medium">
             <SortableHeader field="rating" sortBy={sortBy} sortOrder={sortOrder} onSort={onSort}>
-              Оценка
+              Rating
             </SortableHeader>
           </th>
           <th className="px-3 py-3 text-right font-medium">
             <SortableHeader field="price" sortBy={sortBy} sortOrder={sortOrder} onSort={onSort}>
-              Цена, ₽
+              Price, $
             </SortableHeader>
           </th>
           <th className="px-6 py-3" />
@@ -66,7 +66,7 @@ export function ProductsTable({
         {products.length === 0 && !isFetching && (
           <tr>
             <td colSpan={7} className="py-16 text-center text-gray-400">
-              Ничего не найдено
+              Nothing found
             </td>
           </tr>
         )}

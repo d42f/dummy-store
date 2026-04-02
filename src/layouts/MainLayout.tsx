@@ -23,7 +23,7 @@ export default function MainLayout() {
               </span>
             )}
             <Button variant="secondary" size="sm" onClick={logout}>
-              Выйти
+              Sign out
             </Button>
           </div>
         </div>

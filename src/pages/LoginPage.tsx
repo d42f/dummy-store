@@ -55,27 +55,27 @@ export function LoginPage() {
         <Logo className="h-14 w-14" />
       </div>
 
-      <h1 className="mb-1 text-center text-2xl font-bold text-gray-900">Добро пожаловать!</h1>
-      <p className="mb-6 text-center text-sm text-gray-400">Пожалуйста, авторизируйтесь</p>
+      <h1 className="mb-1 text-center text-2xl font-bold text-gray-900">Welcome!</h1>
+      <p className="mb-6 text-center text-sm text-gray-400">Please sign in to continue</p>
 
       <fieldset disabled={isSubmitting} className="flex flex-col gap-4">
         <FormInput
-          {...register('username', { required: 'Введите логин' })}
+          {...register('username', { required: 'Enter your username' })}
           size="lg"
-          label="Логин"
+          label="Username"
           type="text"
-          placeholder="Введите логин"
+          placeholder="Enter your username"
           error={errors.username?.message}
           leftElement={<UserIcon className="text-gray-400" />}
           rightElement={username && <CloseButton onClick={() => setValue('username', '')} />}
         />
 
         <FormInput
-          {...register('password', { required: 'Введите пароль' })}
+          {...register('password', { required: 'Enter your password' })}
           size="lg"
-          label="Пароль"
+          label="Password"
           type={showPassword ? 'text' : 'password'}
-          placeholder="Введите пароль"
+          placeholder="Enter your password"
           error={errors.password?.message}
           leftElement={<LockIcon className="text-gray-400" />}
           rightElement={
@@ -91,12 +91,12 @@ export function LoginPage() {
           }
         />
 
-        <Checkbox {...register('rememberMe')} label="Запомнить данные" />
+        <Checkbox {...register('rememberMe')} label="Remember me" />
 
         {error && <p className="text-center text-sm text-red-500">{error}</p>}
 
         <Button className="w-full" size="lg" type="submit">
-          Войти
+          Sign in
         </Button>
 
         <div className="flex items-center gap-3">

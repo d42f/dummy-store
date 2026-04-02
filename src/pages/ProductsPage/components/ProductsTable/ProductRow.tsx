@@ -54,10 +54,10 @@ export function ProductRow({ className, product, lowRatingThreshold = 0 }: Produ
       </td>
       <td className="px-6 py-3">
         <div className="flex items-center justify-end gap-2">
-          <Button variant="primary" className="h-8 w-8 rounded-full p-0">
+          <Button variant="primary" className="h-8 w-8 shrink-0 rounded-full p-0">
             <PlusIcon width={14} height={14} />
           </Button>
-          <Button variant="secondary" className="h-8 w-8 rounded-full p-0">
+          <Button variant="secondary" className="h-8 w-8 shrink-0 rounded-full p-0">
             <MoreVerticalIcon className="h-3 w-3" width={14} height={14} />
           </Button>
         </div>

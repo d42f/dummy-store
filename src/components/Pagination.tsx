@@ -22,11 +22,11 @@ export function ProductsPagination({ className, page, limit, total, onPageChange
   return (
     <div className={cn('flex items-center justify-between px-6 py-4 text-sm', className)}>
       <span>
-        <span className="text-gray-500">Показано</span>{' '}
+        <span className="text-gray-500">Showing</span>{' '}
         <span className="font-medium">
           {from}-{to}
         </span>{' '}
-        <span className="text-gray-500">из</span> <span className="font-medium text-gray-800">{total}</span>
+        <span className="text-gray-500">of</span> <span className="font-medium text-gray-800">{total}</span>
       </span>
 
       <div className="flex items-center gap-1">
