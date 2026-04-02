@@ -25,7 +25,7 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/shared/assets/*"]
     }
   },
   "include": ["src"]
