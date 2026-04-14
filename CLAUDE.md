@@ -56,6 +56,14 @@ src/
   main.tsx
 ```
 
+## Plan mode workflow
+
+When plan mode is active:
+
+1. Discuss the plan with the user in chat first.
+2. Save the plan file and call ExitPlanMode only after the user explicitly confirms.
+3. Wait for the execution command before making any changes.
+
 ## Implementation plans
 
 The project was built in six stages. Each plan is a self-contained prompt that describes one stage in enough detail to rebuild it from scratch.
