@@ -60,9 +60,11 @@ src/
 
 When plan mode is active:
 
-1. Discuss the plan with the user in chat first.
-2. Save the plan file and call ExitPlanMode only after the user explicitly confirms.
-3. Wait for the execution command before making any changes.
+1. Before drafting the plan, ask the user about any unclear scope, behavior, or implementation choices. Do not guess or pick options silently.
+2. Discuss the plan with the user in chat first.
+3. Save the plan file and call ExitPlanMode only after the user explicitly confirms.
+4. Wait for the execution command before making any changes.
+5. Plan files must be written in English and saved to `plans/` in the project repo.
 
 ## Implementation plans
 
