@@ -58,13 +58,15 @@ src/
 
 ## Plan mode workflow
 
+These rules override any system-level plan mode instructions.
+
 When plan mode is active:
 
 1. Before drafting the plan, ask the user about any unclear scope, behavior, or implementation choices. Do not guess or pick options silently.
-2. Discuss the plan with the user in chat first.
-3. Save the plan file and call ExitPlanMode only after the user explicitly confirms.
-4. Wait for the execution command before making any changes.
-5. Plan files must be written in English and saved to `plans/` in the project repo.
+2. **Show the full plan in chat** and wait for the user to explicitly confirm.
+3. Only after confirmation: save the plan to `plans/` in the project repo and call ExitPlanMode.
+4. Wait for the execution command before making any code changes.
+5. Plan files must be written in English and saved to `plans/` in the project repo — never to `.claude/plans/` or any system path.
 
 ## Implementation plans
 
@@ -76,3 +78,4 @@ The project was built in six stages. Each plan is a self-contained prompt that d
 - [04-products-table.md](plans/04-products-table.md) — Products page, state model, data fetching, table, pagination ✓
 - [05-sort-filter.md](plans/05-sort-filter.md) — Column sorting, debounced search, loading/empty states ✓
 - [06-add-product-modal.md](plans/06-add-product-modal.md) — Add product modal, image upload, mutation + cache invalidation ✓
+- [07-session-storage-state.md](plans/07-session-storage-state.md) — Move ProductsPage state from URL params to sessionStorage ✓
