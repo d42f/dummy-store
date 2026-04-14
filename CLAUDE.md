@@ -56,6 +56,15 @@ src/
   main.tsx
 ```
 
+## After editing files
+
+After saving any file, fix all ESLint and Prettier errors before considering the task done:
+
+```
+npx eslint --fix <file>
+npx prettier --write <file>
+```
+
 ## Plan mode workflow
 
 These rules override any system-level plan mode instructions.
@@ -78,4 +87,3 @@ The project was built in six stages. Each plan is a self-contained prompt that d
 - [04-products-table.md](plans/04-products-table.md) — Products page, state model, data fetching, table, pagination ✓
 - [05-sort-filter.md](plans/05-sort-filter.md) — Column sorting, debounced search, loading/empty states ✓
 - [06-add-product-modal.md](plans/06-add-product-modal.md) — Add product modal, image upload, mutation + cache invalidation ✓
-- [07-session-storage-state.md](plans/07-session-storage-state.md) — Move ProductsPage state from URL params to sessionStorage ✓
